@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Aplicación</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    
+    nav {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 15px;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .welcome {
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <nav>
+    <h1>Mi Aplicación</h1>
+    <ul id="nav-links">
+      <li><a href="#" id="login-link">Iniciar Sesión</a></li>
+      <li><a href="#" id="register-link">Registro</a></li>
+    </ul>
+  </nav>
+
+  
+  <div class="container" id="login-form">
+    <h2>Iniciar Sesión</h2>
+    <form id="form-login">
+      <label for="usuario">Usuario:</label>
+      <input type="text" id="usuario" name="usuario" required>
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <div class="welcome hidden" id="welcome-message">
+    <h2>Bienvenido, <span id="user-name"></span> 🎉</h2>
+    <p>Has iniciado sesión correctamente.</p>
+  </div>
+
+  <script>
+    const navLinks = document.getElementById('nav-links');
+    const loginForm = document.getElementById('login-form');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const userNameDisplay = document.getElementById('user-name');
+
+    
+    let usuarioAutenticado = false;
+    let nombreUsuario = '';
+
+    
+    function actualizarNavegacion() {
+      navLinks.innerHTML = '';
+
+      if (usuarioAutenticado) {
+        navLinks.innerHTML = `
+          <li><a href="#">${nombreUsuario}</a></li>
+          <li><a href="#" id="logout-link">Cerrar Sesión</a></li>
+        `;
+        document.getElementById('logout-link').addEventListener('click', cerrarSesion);
+      } else {
+        navLinks.innerHTML = `
+          <li><a href="#" id="login-link">Iniciar Sesión</a></li>
+          <li><a href="#" id="register-link">Registro</a></li>
+        `;
+      }
+    }
+
+    
+    document.getElementById('form-login').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const usuario = document.getElementById('usuario').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (usuario && password) {
+        
+        usuarioAutenticado = true;
+        nombreUsuario = usuario;
+
+      
+        loginForm.classList.add('hidden');
+        welcomeMessage.classList.remove('hidden');
+        userNameDisplay.textContent = nombreUsuario;
+
+        actualizarNavegacion();
+      } else {
+        alert('Por favor, completa todos los campos.');
+      }
+    });
+
+    
+    function cerrarSesion() {
+      usuarioAutenticado = false;
+      nombreUsuario = '';
+
+      
+      welcomeMessage.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+      document.getElementById('form-login').reset();
+      actualizarNavegacion();
+    }
+
+    
+    actualizarNavegacion();
+  </script>
+
+</body>
+</html>
